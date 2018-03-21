@@ -19,12 +19,16 @@ public class MailMain {
 		System.out.println("输入内容，输入OK完成：");
 		bean.setText(scanner.next());
 		
-		System.out.println("输入时间(例：2017-10-14 10:28)，输入OK完成：");
+		System.out.println("输入时间(例：2017-10-14 10:28)，输入OK完成(当前时间输入OK跳过)：");
 		bean.setDate(scanner.next());
 		
 		System.out.println("输入附件完整路径，多个路径以','分隔，输入OK完成：");
 		String path = scanner.next();
-		bean.setFilepath(path.split(",|，"));
+		if (path.length() < 1) {
+			bean.setFilepath(null);
+		} else {
+			bean.setFilepath(path.split(",|，"));
+		}
 		
 		String receive = "";
 		while (receive.length() < 1) {
@@ -35,7 +39,7 @@ public class MailMain {
 		
 		String pwd = "";
 		while (pwd.length() < 1) {
-			System.out.println("输入密码，输入OK完成：");
+			System.out.println("输入你的邮箱密码，输入OK完成：");
 			pwd = scanner.next();
 		}
 		bean.setPwd(pwd);
@@ -43,6 +47,7 @@ public class MailMain {
 		SendMail mail = new SendMail(bean);
 		mail.send();
 		
+		System.out.println("end...");
 	}
 
 }

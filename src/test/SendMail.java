@@ -15,12 +15,13 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.MimeUtility;
 
 public class SendMail {
 
-	private static String SMTPSERVER = "smtp.ym.163.com";
-	private static String SMTPPORT = "465"; 
-	private static String account = "ws@mingcloud.cn";
+	private static String SMTPSERVER = "smtp.163.com";
+	private static String SMTPPORT = "465";
+	private static String account = "";
 	private MailBean bean = new MailBean();
 	
 	public SendMail() {
@@ -41,7 +42,8 @@ public class SendMail {
 			properties.setProperty("mail.transport.protocol", "smtp");
 			// 发件人的邮箱的 SMTP 服务器地址
 			properties.setProperty("mail.smtp.host", SMTPSERVER);
-			properties.setProperty("mail.smtp.port", SMTPPORT); 
+			properties.setProperty("mail.smtp.port", SMTPPORT);
+			properties.setProperty("mail.smtp.socketFactory.port", SMTPPORT);
 			properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 			// 需要请求认证
 			properties.setProperty("mail.smtp.auth", "true");
@@ -89,7 +91,8 @@ public class SendMail {
 				// 得到附件本身并至入BodyPart 
 				bodyPart.setDataHandler(new DataHandler(source));
 				// 得到文件名同样至入BodyPart  
-				bodyPart.setFileName(source.getName());
+//				bodyPart.setFileName(source.getName());
+				bodyPart.setFileName(MimeUtility.encodeText(source.getName(), "GBK", null));
 				multipart.addBodyPart(bodyPart);
 			}
 			MimeBodyPart bodyPart = new MimeBodyPart();
