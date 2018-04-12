@@ -12,6 +12,8 @@ public class MailBean {
 	
 	private String date;
 	
+	private String priority;
+	
 	private String[] filepath;
 
 	public String getReceive() {
@@ -52,6 +54,14 @@ public class MailBean {
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public String getPriority() {
+		return priority;
+	}
+
+	public void setPriority(String priority) {
+		this.priority = priority;
 	}
 
 	public String[] getFilepath() {

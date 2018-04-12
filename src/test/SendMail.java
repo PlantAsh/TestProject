@@ -19,7 +19,7 @@ import javax.mail.internet.MimeUtility;
 
 public class SendMail {
 
-	private static String SMTPSERVER = "smtp.163.com";
+	private static String SMTPSERVER = "smtp.qq.com";
 	private static String SMTPPORT = "465";
 	private static String account = "";
 	private MailBean bean = new MailBean();
@@ -112,6 +112,12 @@ public class SendMail {
 			date = sdf.parse(bean.getDate());
 		}
 		message.setSentDate(date);
+		
+		if(bean.getPriority() != null && !bean.getPriority().equals("")) {
+			// 设置优先级(1:紧急   3:普通    5:低) 
+			message.setHeader("X-Priority", bean.getPriority()); 
+		}
+        
 		// 保存设置
 		message.saveChanges();
 		

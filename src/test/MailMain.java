@@ -22,7 +22,10 @@ public class MailMain {
 		System.out.println("输入时间(例：2017-10-14 10:28)，输入OK完成(当前时间输入OK跳过)：");
 		bean.setDate(scanner.next());
 		
-		System.out.println("输入附件完整路径，多个路径以','分隔，输入OK完成：");
+		System.out.println("输入邮件重要性数字(1:紧急   3:普通    5:低)，输入OK完成(输入OK可跳过)：");
+		bean.setPriority(scanner.next());
+		
+		System.out.println("输入附件完整路径，多个路径以','分隔，输入OK完成(输入OK可跳过)：");
 		String path = scanner.next();
 		if (path.length() < 1) {
 			bean.setFilepath(null);
