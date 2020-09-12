@@ -20,6 +20,7 @@ public class CheckSymmeryWord {
 
     public static void main(String[] args) {
         System.out.println("最终结果：" + check("ahAs -ksikfsahtdAKGB,S,t"));
+        System.out.println("aaaa最终结果：" + check("aaaa"));
         System.out.println("google最终结果：" + check("google"));
         System.out.println("abcda最终结果：" + check("abcda"));
         System.out.println("pop-upu最终结果：" + check("pop-upu"));
@@ -54,18 +55,16 @@ public class CheckSymmeryWord {
             for (int j = i + 1; j < all.length; j++) {
                 if (all[i] == all[j]) {
                     second = j;
+                    OneBean oneBean = new OneBean();
+                    oneBean.setFirst(i);
+                    oneBean.setSecond(second);
+                    list.add(oneBean);
                 }
             }
-            OneBean oneBean = new OneBean();
-            oneBean.setFirst(i);
-            oneBean.setSecond(second);
-            list.add(oneBean);
-            if (second > i) {
-                OneBean bean = new OneBean();
-                bean.setFirst(i);
-                bean.setSecond(i);
-                list.add(bean);
-            }
+            OneBean bean = new OneBean();
+            bean.setFirst(i);
+            bean.setSecond(i);
+            list.add(bean);
         }
 
         //计算对称
@@ -106,6 +105,7 @@ public class CheckSymmeryWord {
         int first = indexList.get(index - 1);
         int second = indexList.get(index);
         if (first == second) {
+            res.add(new String(new byte[]{all[first]}));
             return;
         }
         for (OneBean oneBean : dataList) {
