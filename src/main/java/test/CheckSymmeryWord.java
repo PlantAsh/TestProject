@@ -20,7 +20,7 @@ public class CheckSymmeryWord {
 
     public static void main(String[] args) {
         System.out.println("最终结果：" + check("ahAs -ksikfsahtdAKGB,S,t"));
-        System.out.println("aaaa最终结果：" + check("aaaa"));
+        System.out.println("aaaa最终结果：" + check("civilwartestingwhetherthatnaptionoranynartionsoconceivedandsodedicatedcanlongendureWeareqmetonagreatbattlefiemldoftzhatwarWehavecometodedicpateaportionofthatfieldasafinalrestingplaceforthosewhoheregavetheirlivesthatthatnationmightliveItisaltogetherfangandproperthatweshoulddothisButinalargersensewecannotdedicatewecannotconsecratewecannothallowthisgroundThebravelmenlivinganddeadwhostruggledherehaveconsecrateditfaraboveourpoorponwertoaddordetractTgheworldadswfilllittlenotlenorlongrememberwhatwesayherebutitcanneverforgetwhattheydidhereItisforusthelivingrathertobededicatedheretotheulnfinishedworkwhichtheywhofoughtherehavethusfarsonoblyadvancedItisratherforustobeherededicatedtothegreattdafskremainingbeforeusthatfromthesehonoreddeadwetakeincreaseddevotiontothatcauseforwhichtheygavethelastpfullmeasureofdevotionthatweherehighlyresolvethatthesedeadshallnothavediedinvainthatthisnationunsderGodshallhaveanewbirthoffreedomandthatgovernmentofthepeoplebythepeopleforth"));
         System.out.println("google最终结果：" + check("google"));
         System.out.println("abcda最终结果：" + check("abcda"));
         System.out.println("pop-upu最终结果：" + check("pop-upu"));
@@ -33,8 +33,13 @@ public class CheckSymmeryWord {
      * @return
      */
     public static String check(String word) {
+        Date start;
+        Date end;
         if (StringUtils.isBlank(word)) {
             return "";
+        }
+        if (word.length() == 1) {
+            return word;
         }
         System.out.println("处理前：" + word);
         byte[] all = word.getBytes();
@@ -49,9 +54,10 @@ public class CheckSymmeryWord {
         }
         System.out.println("处理后：" + back);
         all = back.toString().getBytes();
+        start = new Date();
         List<OneBean> list = new ArrayList<>();
         for (int i = 0; i < all.length; i++) {
-            int second = i;
+            int second;
             for (int j = i + 1; j < all.length; j++) {
                 if (all[i] == all[j]) {
                     second = j;
@@ -66,8 +72,11 @@ public class CheckSymmeryWord {
             bean.setSecond(i);
             list.add(bean);
         }
+        end = new Date();
+        System.out.println("1：" + (end.getTime() - start.getTime()));
 
         //计算对称
+        start = new Date();
         Set<String> res = new HashSet<>();
         for (OneBean oneBean : list) {
             List<OneBean> backList = new ArrayList<>(list);
@@ -77,7 +86,10 @@ public class CheckSymmeryWord {
             indexList.add(oneBean.getSecond());
             symmery(indexList, backList, res, all);
         }
+        end = new Date();
+        System.out.println("2：" + (end.getTime() - start.getTime()));
 
+        start = new Date();
         List<String> finalList = new LinkedList<>();
         int length = 0;
         for (String s : res) {
@@ -89,6 +101,8 @@ public class CheckSymmeryWord {
                 length = s.length();
             }
         }
+        end = new Date();
+        System.out.println("3：" + (end.getTime() - start.getTime()));
 
         return StringUtils.join(finalList, "/");
     }
@@ -108,10 +122,22 @@ public class CheckSymmeryWord {
             res.add(new String(new byte[]{all[first]}));
             return;
         }
-        for (OneBean oneBean : dataList) {
+        if (second - first == 1) {
+            splicing(indexList, res, all);
+            return;
+        }
+        Iterator iterator = dataList.listIterator();
+        while (iterator.hasNext()) {
+            OneBean oneBean = (OneBean) iterator.next();
+            //只找连续的字符串子集
+            if (oneBean.getFirst() - first != 1 || second - oneBean.getSecond() != 1) {
+                continue;
+            }
+
             if ((oneBean.getSecond() - oneBean.getFirst()) >= (second - first)
                     || oneBean.getFirst() <= first || oneBean.getSecond() >= second) {
                 splicing(indexList, res, all);
+                iterator.remove();
                 continue;
             }
             if (oneBean.getFirst() == oneBean.getSecond()) {
